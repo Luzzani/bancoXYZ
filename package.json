@@ -6,18 +6,29 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write ."
   },
   "dependencies": {
+    "eslint-config-expo": "~8.0.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
     "expo": "~52.0.49",
     "expo-asset": "~11.0.5",
     "expo-status-bar": "~2.0.1",
+    "prettier": "^3.8.1",
     "react": "18.3.1",
     "react-native": "0.76.9"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@types/react": "~18.3.12",
+    "eslint": "^8.57.1",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-native": "^5.0.0",
     "typescript": "^5.3.3"
   },
   "private": true
