@@ -4,17 +4,17 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../navigation/RootNavigator";
 
-export const LoginScreen = () => {
-
+export const TransferFormScreen = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
 
     return (
         <View style={styles.container}>
             <Text style={styles.title}>BancoXYZ</Text>
-            <Text>Login Screen</Text>
+            <Text>Transfer Form Screen</Text>
             <Button
-                title="Entrar"
-                onPress={() => navigation.navigate('Home')}
+                title="Volver"
+                onPress={() => navigation.goBack()}
                 color={COLORS.primary}
             />
         </View>
