@@ -1,25 +1,28 @@
-import { AuthResponse, LoginCredentials } from '../features/auth/types';
-import { delay } from '../utils/time';
+import axios from 'axios';
+import { AuthError, AuthResponse, LoginCredentials } from '../features/auth/types';
+import { apiClient } from './apiClient';
 
 export const authApi = {
   login: async (credentials: LoginCredentials): Promise<AuthResponse> => {
-    await delay(1500);
+    try {
+      const response = await apiClient.post<AuthResponse>('/login', credentials);
 
-    if (credentials?.email === 'admin@test.com' && credentials?.password === '123456') {
-      return {
-        user: {
-          id: 1,
-          email: 'admin@test.com',
-          name: 'John Doe',
-        },
-        token: 'v3ry-s3cur3-f4k3-t0k3n',
-      };
+      return response.data;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const serverError = error.response?.data as AuthError;
+
+        throw {
+          message: serverError?.message || 'Error en las credenciales',
+          status: error.response?.status || 500,
+          code: serverError?.code || 'AUTH_ERROR',
+        } as AuthError;
+      }
+
+      throw {
+        message: 'Ocurrió un error inesperado',
+        status: 500,
+      } as AuthError;
     }
-
-    throw {
-      message: 'Email o contraseña incorrectos',
-      status: 401,
-      code: 'AUTH_INVALID_CREDENTIALS',
-    };
   },
 };
