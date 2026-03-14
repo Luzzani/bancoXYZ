@@ -19,3 +19,9 @@ export interface AuthError {
   status?: number;
   code: string;
 }
+
+export type FormErrors = {
+  email?: string;
+  password?: string;
+  general?: string;
+};
