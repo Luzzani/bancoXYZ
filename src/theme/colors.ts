@@ -7,10 +7,13 @@ export const COLORS = {
     primary: '#1A1C1E',
     secondary: '#6C757D',
     inverse: '#FFFFFF',
+    placeholder: '#999999',
   },
   status: {
     success: '#28A745',
     error: '#DC3545',
+    errorLight: '#FEE2E2',
+    errorBorder: '#FECACA',
     warning: '#FFC107',
     info: '#17A2B8',
   },
