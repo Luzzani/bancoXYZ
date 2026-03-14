@@ -3,13 +3,7 @@ import { LoginScreen } from '../features/auth/LoginScreen';
 import { HomeScreen } from '../features/home/HomeScreen';
 import { TransferFormScreen } from '../features/transfer/TransferFormScreen';
 import { TransferListScreen } from '../features/transfer/TransferListScreen';
-
-export type RootStackParamList = {
-  Login: undefined;
-  Home: undefined;
-  TransferList: undefined;
-  TransferForm: undefined;
-};
+import { RootStackParamList } from './types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 

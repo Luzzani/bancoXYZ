@@ -2,7 +2,7 @@ import { Button, StyleSheet, Text, View } from 'react-native';
 import { COLORS } from '../../theme/colors';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../navigation/RootNavigator';
+import { RootStackParamList } from '../../navigation/types';
 
 export const TransferListScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
