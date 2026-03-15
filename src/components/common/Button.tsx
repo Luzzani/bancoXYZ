@@ -11,19 +11,36 @@ import { COLORS } from '../../theme/colors';
 interface ButtonProps extends TouchableOpacityProps {
   text: string;
   isLoading?: boolean;
+  disabled?: boolean;
 }
 
-export const Button = ({ text, isLoading, style, ...props }: ButtonProps) => {
+export const Button = ({ text, isLoading, disabled, style, ...props }: ButtonProps) => {
   return (
     <TouchableOpacity
-      style={[styles.button, style]}
+      style={[
+        styles.button,
+        (disabled || isLoading) && {
+          backgroundColor: COLORS.status.disabled,
+          elevation: 0,
+          shadowOpacity: 0,
+        },
+        style,
+      ]}
       activeOpacity={0.8}
-      disabled={isLoading}
+      disabled={disabled || isLoading}
       {...props}>
       {isLoading ? (
         <ActivityIndicator color={COLORS.text.inverse} />
       ) : (
-        <Text style={styles.buttonText}>{text}</Text>
+        <Text
+          style={[
+            styles.buttonText,
+            (disabled || isLoading) && {
+              color: COLORS.text.disabled,
+            },
+          ]}>
+          {text}
+        </Text>
       )}
     </TouchableOpacity>
   );

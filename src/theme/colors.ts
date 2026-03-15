@@ -8,6 +8,7 @@ export const COLORS = {
     secondary: '#6C757D',
     inverse: '#FFFFFF',
     placeholder: '#999999',
+    disabled: '#A1A1A1',
   },
   status: {
     success: '#28A745',
@@ -16,6 +17,7 @@ export const COLORS = {
     errorBorder: '#FECACA',
     warning: '#FFC107',
     info: '#17A2B8',
+    disabled: '#bdc3c7',
   },
   border: '#E1E4E8',
 } as const;

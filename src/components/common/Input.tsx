@@ -1,21 +1,50 @@
-import React from 'react';
-import { View, Text, TextInput, StyleSheet, TextInputProps } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TextInput, TextInputProps, View, TouchableOpacity } from 'react-native';
 import { COLORS } from '../../theme/colors';
+import { Ionicons } from '@expo/vector-icons';
 
 interface InputProps extends TextInputProps {
   label: string;
-  error?: boolean;
+  error?: string | null;
 }
 
-export const Input = ({ label, error, style, ...props }: InputProps) => {
+export const Input = ({ label, error, secureTextEntry, style, ...props }: InputProps) => {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const isPasswordInput = secureTextEntry !== undefined;
+
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
-      <TextInput
-        style={[styles.input, error && styles.inputError, style]}
-        placeholderTextColor={COLORS.text.placeholder}
-        {...props}
-      />
+
+      <View style={styles.inputWrapper}>
+        <TextInput
+          style={[
+            styles.input,
+            !!error && styles.inputError,
+            isPasswordInput && { paddingRight: 50 },
+            style,
+          ]}
+          placeholderTextColor={COLORS.text.placeholder}
+          secureTextEntry={isPasswordInput && !isPasswordVisible}
+          {...props}
+        />
+
+        {isPasswordInput && (
+          <TouchableOpacity
+            style={styles.iconContainer}
+            onPress={() => setIsPasswordVisible(!isPasswordVisible)}
+            activeOpacity={0.6}>
+            <Ionicons
+              name={isPasswordVisible ? 'eye-off' : 'eye'}
+              size={24}
+              color={COLORS.text.secondary}
+            />
+          </TouchableOpacity>
+        )}
+      </View>
+
+      {!!error && <Text style={styles.errorText}>{error}</Text>}
     </View>
   );
 };
@@ -30,6 +59,10 @@ const styles = StyleSheet.create({
     color: COLORS.text.primary,
     marginBottom: 8,
     marginLeft: 4,
+  },
+  inputWrapper: {
+    position: 'relative',
+    justifyContent: 'center',
   },
   input: {
     height: 56,
@@ -46,8 +79,22 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 4,
   },
+  iconContainer: {
+    position: 'absolute',
+    right: 16,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   inputError: {
     borderColor: COLORS.status.error,
     backgroundColor: COLORS.status.errorLight,
+  },
+  errorText: {
+    color: COLORS.status.error,
+    fontSize: 12,
+    marginTop: 4,
+    marginLeft: 4,
+    fontWeight: '500',
   },
 });

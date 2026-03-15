@@ -32,39 +32,35 @@ export const LoginScreen = () => {
 
             <View style={styles.form}>
               <Input
-                error={!!error.email}
                 label="Correo electrónico"
                 placeholder="ejemplo@mail.com"
                 value={email}
                 onChangeText={onEmailChange}
+                error={error.email}
                 autoCapitalize="none"
                 keyboardType="email-address"
-                placeholderTextColor={COLORS.text.placeholder}
-                autoCorrect={false}
               />
+
               <Input
-                error={!!error.password}
                 label="Contraseña"
                 placeholder="Tu clave de 6 dígitos"
                 value={password}
                 onChangeText={onPasswordChange}
+                error={error.password}
                 secureTextEntry
-                placeholderTextColor={COLORS.text.placeholder}
               />
 
-              {error?.email || error?.general || error?.password ? (
+              {error?.general ? (
                 <View style={styles.errorBox}>
-                  <Text style={styles.errorText}>
-                    {error?.email || error?.password || error?.general}
-                  </Text>
+                  <Text style={styles.errorText}>{error.general}</Text>
                 </View>
               ) : null}
 
               <Button
                 text="Entrar"
                 onPress={handleLogin}
-                activeOpacity={0.8}
                 isLoading={isLoading}
+                disabled={!!error.email || !!error.password}
               />
             </View>
           </View>
