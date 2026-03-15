@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { BalanceState } from '../../../api/balanceApi';
 import { fetchBalance } from './thunk';
+import { BalanceState } from '../../../api/types';
 
 const initialState: BalanceState = {
   data: null,
