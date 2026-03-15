@@ -102,18 +102,25 @@ export const setupHandlers = () => {
         );
       }
 
-      currentBalance -= value;
+      const today = new Date().toISOString().split('T')[0];
+      const isScheduled = transferDate > today;
 
-      const newTransfer = {
+      if (!isScheduled) {
+        currentBalance -= value;
+      }
+
+      const newTransfer: TransferHistoryItem = {
         value,
         date: transferDate,
         currency,
         payeer: { document: payeerDocument, name: 'Destinatario Mock' },
       };
+
       transferHistory.unshift(newTransfer);
 
       return [200, { status: 'success' }];
     });
+
   mockInstance
     .onGet('/transferlist')
     .reply(async (config): Promise<[number, TransferHistoryItem[] | ApiError]> => {
