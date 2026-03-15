@@ -27,3 +27,13 @@ export interface TransferResponse {
   status: 'success' | 'error';
   message?: string;
 }
+
+export interface TransferHistoryItem {
+  value: number;
+  date: string;
+  currency: string;
+  payeer: {
+    document: string;
+    name: string;
+  };
+}

@@ -1,9 +1,25 @@
 import { delay } from '../../utils/time';
 import { mockInstance } from './setup';
 import { AuthResponse, LoginCredentials } from '../../features/auth/types';
-import { BalanceResponse, TransferRequest, TransferResponse, ApiError } from '../types';
+import {
+  BalanceResponse,
+  TransferRequest,
+  TransferResponse,
+  ApiError,
+  TransferHistoryItem,
+} from '../types';
 
+// VARIABLES DE ESTADO LOCAL (SIMULA LA DB)
+// Las declaramos fuera de la función para que persista durante la sesión de la app
 let currentBalance = 1500420.5;
+let transferHistory: TransferHistoryItem[] = [
+  {
+    value: 5000,
+    date: '2026-03-10',
+    currency: 'ARS',
+    payeer: { document: '2033444555', name: 'Marta Gómez' },
+  },
+];
 const AUTH_TOKEN = 'v3ry-s3cur3-f4k3-t0k3n';
 
 const createError = (status: number, message: string, code: string): [number, ApiError] => [
@@ -88,6 +104,26 @@ export const setupHandlers = () => {
 
       currentBalance -= value;
 
+      const newTransfer = {
+        value,
+        date: transferDate,
+        currency,
+        payeer: { document: payeerDocument, name: 'Destinatario Mock' },
+      };
+      transferHistory.unshift(newTransfer);
+
       return [200, { status: 'success' }];
+    });
+  mockInstance
+    .onGet('/transferlist')
+    .reply(async (config): Promise<[number, TransferHistoryItem[] | ApiError]> => {
+      await delay(1000);
+      const authHeader = config.headers?.Authorization;
+
+      if (authHeader !== `Bearer ${AUTH_TOKEN}`) {
+        return UNAUTHORIZED_ERROR;
+      }
+
+      return [200, transferHistory];
     });
 };
