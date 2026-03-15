@@ -37,3 +37,9 @@ export interface TransferHistoryItem {
     name: string;
   };
 }
+
+export interface HistoryState {
+  items: TransferHistoryItem[];
+  isLoading: boolean;
+  error: string | null;
+}
