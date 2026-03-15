@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { balanceApi, BalanceResponse } from '../../../api/balanceApi';
-import { AuthError } from '../../../features/auth/types';
+import { balanceApi } from '../../../api/balanceApi';
+import { ApiError, BalanceResponse } from '../../../api/types';
 
 export const fetchBalance = createAsyncThunk<BalanceResponse, void, { rejectValue: ApiError }>(
   'balance/fetchBalance',
@@ -8,7 +8,7 @@ export const fetchBalance = createAsyncThunk<BalanceResponse, void, { rejectValu
     try {
       return await balanceApi.getBalance();
     } catch (error) {
-      return rejectWithValue(error as AuthError);
+      return rejectWithValue(error as ApiError);
     }
   },
 );

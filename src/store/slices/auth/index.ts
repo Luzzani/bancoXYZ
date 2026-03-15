@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { AuthState } from './types';
 import { initializeAuth, login } from './thunks';
-import { AuthError } from '../../../features/auth/types';
+import { ApiError } from '../../../api/types';
 
 const initialState: AuthState = {
   token: null,
@@ -54,7 +54,7 @@ const authSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload as AuthError;
+        state.error = action.payload as ApiError;
       });
   },
 });

@@ -14,12 +14,6 @@ export interface LoginCredentials {
   password: string;
 }
 
-export interface AuthError {
-  message: string;
-  status?: number;
-  code: string;
-}
-
 export type FormErrors = {
   email?: string;
   password?: string;

@@ -1,7 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { authApi } from '../../../api/authApi';
 import { getToken, saveToken } from '../../../utils/storage';
-import { AuthError, AuthResponse, LoginCredentials } from '../../../features/auth/types';
+import { AuthResponse, LoginCredentials } from '../../../features/auth/types';
+import { ApiError } from '../../../api/types';
 
 export const initializeAuth = createAsyncThunk<string | null, void, { rejectValue: string }>(
   'auth/initialize',
@@ -16,7 +17,7 @@ export const initializeAuth = createAsyncThunk<string | null, void, { rejectValu
   },
 );
 
-export const login = createAsyncThunk<AuthResponse, LoginCredentials, { rejectValue: AuthError }>(
+export const login = createAsyncThunk<AuthResponse, LoginCredentials, { rejectValue: ApiError }>(
   'auth/login',
   async (credentials, { rejectWithValue }) => {
     try {
@@ -42,7 +43,7 @@ export const login = createAsyncThunk<AuthResponse, LoginCredentials, { rejectVa
 
       return response;
     } catch (error) {
-      if (!(error as AuthError).code) {
+      if (!(error as ApiError).code) {
         return rejectWithValue({
           message: 'Error inesperado durante el inicio de sesión',
           code: 'INTERNAL_ERROR',
@@ -50,7 +51,7 @@ export const login = createAsyncThunk<AuthResponse, LoginCredentials, { rejectVa
         });
       }
 
-      return rejectWithValue(error as AuthError);
+      return rejectWithValue(error as ApiError);
     }
   },
 );

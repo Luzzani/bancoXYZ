@@ -2,7 +2,7 @@ import { AxiosRequestConfig } from 'axios';
 import { delay } from '../../utils/time';
 import { mockInstance } from './setup';
 import { AuthResponse, LoginCredentials } from '../../features/auth/types';
-import { BalanceResponse } from '../balanceApi';
+import { BalanceResponse } from '../types';
 
 export const setupHnalders = () => {
   mockInstance

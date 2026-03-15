@@ -1,18 +1,6 @@
 import axios from 'axios';
 import { apiClient } from './apiClient';
-import { AuthError } from '../features/auth/types';
-
-export interface BalanceResponse {
-  balance: number;
-  currency: string;
-  lastMovement: string;
-}
-
-export interface BalanceState {
-  data: BalanceResponse | null;
-  isLoading: boolean;
-  error: string | null;
-}
+import { ApiError, BalanceResponse } from './types';
 
 export const balanceApi = {
   getBalance: async (): Promise<BalanceResponse> => {
@@ -21,19 +9,19 @@ export const balanceApi = {
       return response.data;
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        const serverError = error.response?.data as AuthError;
+        const serverError = error.response?.data as ApiError;
 
         throw {
           message: serverError?.message || 'No se pudo obtener el saldo',
           status: error.response?.status || 500,
           code: serverError?.code || 'BALANCE_ERROR',
-        } as AuthError;
+        } as ApiError;
       }
 
       throw {
         message: 'Ocurrió un error inesperado al consultar el saldo',
         status: 500,
-      } as AuthError;
+      } as ApiError;
     }
   },
 };
