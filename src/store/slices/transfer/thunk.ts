@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ApiError, TransferRequest } from '../../../api/types';
 import { transferApi } from '../../../api/transferApi';
 import { fetchBalance } from '../balance/thunk';
+import { fetchHistory } from '../history/thunk';
 
 export const executeTransfer = createAsyncThunk(
   'transfers/execute',
@@ -10,7 +11,7 @@ export const executeTransfer = createAsyncThunk(
       const response = await transferApi.sendTransfer(transferData);
 
       if (response.status === 'success') {
-        dispatch(fetchBalance());
+        await Promise.all([dispatch(fetchBalance()), dispatch(fetchHistory())]);
         return response;
       }
 
