@@ -8,6 +8,12 @@ export interface BalanceResponse {
   lastMovement: string;
 }
 
+export interface BalanceState {
+  data: BalanceResponse | null;
+  isLoading: boolean;
+  error: string | null;
+}
+
 export const balanceApi = {
   getBalance: async (): Promise<BalanceResponse> => {
     try {
