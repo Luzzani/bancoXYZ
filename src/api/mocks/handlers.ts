@@ -2,6 +2,7 @@ import { AxiosRequestConfig } from 'axios';
 import { delay } from '../../utils/time';
 import { mockInstance } from './setup';
 import { AuthResponse, LoginCredentials } from '../../features/auth/types';
+import { BalanceResponse } from '../balanceApi';
 
 export const setupHnalders = () => {
   mockInstance
@@ -26,6 +27,30 @@ export const setupHnalders = () => {
         }
 
         return [401, { message: 'Credenciales inválidas' }];
+      },
+    );
+  mockInstance
+    .onGet('/balance')
+    .reply(
+      async (
+        config: AxiosRequestConfig,
+      ): Promise<[number, BalanceResponse | { message: string }]> => {
+        await delay(1000);
+
+        const authHeader = config.headers?.Authorization;
+
+        if (authHeader === 'Bearer v3ry-s3cur3-f4k3-t0k3n') {
+          return [
+            200,
+            {
+              balance: 1500420.5,
+              currency: 'ARS',
+              lastMovement: '2026-03-14',
+            },
+          ];
+        }
+
+        return [401, { message: 'No autorizado: Token inválido o inexistente' }];
       },
     );
 };
