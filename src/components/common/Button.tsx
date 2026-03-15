@@ -5,6 +5,8 @@ import {
   ActivityIndicator,
   StyleSheet,
   TouchableOpacityProps,
+  StyleProp,
+  TextStyle,
 } from 'react-native';
 import { COLORS } from '../../theme/colors';
 
@@ -12,9 +14,10 @@ interface ButtonProps extends TouchableOpacityProps {
   text: string;
   isLoading?: boolean;
   disabled?: boolean;
+  textStyle?: StyleProp<TextStyle>;
 }
 
-export const Button = ({ text, isLoading, disabled, style, ...props }: ButtonProps) => {
+export const Button = ({ text, isLoading, disabled, style, textStyle, ...props }: ButtonProps) => {
   return (
     <TouchableOpacity
       style={[
@@ -38,6 +41,7 @@ export const Button = ({ text, isLoading, disabled, style, ...props }: ButtonPro
             (disabled || isLoading) && {
               color: COLORS.text.disabled,
             },
+            textStyle,
           ]}>
           {text}
         </Text>
