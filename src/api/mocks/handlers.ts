@@ -2,7 +2,11 @@ import { AxiosRequestConfig } from 'axios';
 import { delay } from '../../utils/time';
 import { mockInstance } from './setup';
 import { AuthResponse, LoginCredentials } from '../../features/auth/types';
-import { BalanceResponse } from '../types';
+import { BalanceResponse, TransferRequest, TransferResponse } from '../types';
+
+// VARIABLE DE ESTADO LOCAL (SIMULA LA DB)
+// La declaramos fuera de la función para que persista durante la sesión de la app
+let currentBalance = 1500420.5;
 
 export const setupHnalders = () => {
   mockInstance
@@ -43,7 +47,7 @@ export const setupHnalders = () => {
           return [
             200,
             {
-              balance: 1500420.5,
+              balance: currentBalance,
               currency: 'ARS',
               lastMovement: '2026-03-14',
             },
@@ -53,4 +57,49 @@ export const setupHnalders = () => {
         return [401, { message: 'No autorizado: Token inválido o inexistente' }];
       },
     );
+  mockInstance.onPost('/transfer').reply(async (config): Promise<[number, TransferResponse]> => {
+    await delay(1500);
+
+    const data: TransferRequest = JSON.parse(config.data);
+    const { value, currency, payeerDocument, transferDate } = data;
+
+    if (!value || !currency || !payeerDocument || !transferDate) {
+      return [
+        400,
+        {
+          status: 'error',
+          message: 'Datos inválidos: faltan campos obligatorios en la transferencia.',
+        },
+      ];
+    }
+
+    if (value <= 0) {
+      return [
+        400,
+        {
+          status: 'error',
+          message: 'El monto de la transferencia debe ser mayor a cero.',
+        },
+      ];
+    }
+
+    if (value > currentBalance) {
+      return [
+        400,
+        {
+          status: 'error',
+          message: 'Saldo insuficiente para realizar la operación.',
+        },
+      ];
+    }
+
+    currentBalance -= value;
+
+    return [
+      200,
+      {
+        status: 'success',
+      },
+    ];
+  });
 };

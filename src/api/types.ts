@@ -15,3 +15,15 @@ export interface BalanceState {
   isLoading: boolean;
   error: string | null;
 }
+
+export interface TransferRequest {
+  value: number;
+  currency: string;
+  payeerDocument: string;
+  transferDate: string;
+}
+
+export interface TransferResponse {
+  status: 'success' | 'error';
+  message?: string;
+}
