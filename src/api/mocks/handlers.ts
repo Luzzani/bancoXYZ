@@ -60,6 +60,17 @@ export const setupHandlers = () => {
   mockInstance.onPost('/transfer').reply(async (config): Promise<[number, TransferResponse]> => {
     await delay(1500);
 
+    const authHeader = config.headers?.Authorization;
+    if (authHeader !== 'Bearer v3ry-s3cur3-f4k3-t0k3n') {
+      return [
+        401,
+        {
+          status: 'error',
+          message: 'No autorizado: Token inválido o inexistente',
+        },
+      ];
+    }
+
     const data: TransferRequest = JSON.parse(config.data);
     const { value, currency, payeerDocument, transferDate } = data;
 
