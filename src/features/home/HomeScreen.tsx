@@ -1,26 +1,12 @@
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { COLORS } from '../../theme/colors';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../navigation/types';
+import { BalanceCard } from '../balance/BalanceCard';
 
 export const HomeScreen = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>BancoXYZ</Text>
-      <Text>Home Screen</Text>
-      <Button
-        title="Transferir"
-        onPress={() => navigation.navigate('TransferForm')}
-        color={COLORS.primary}
-      />
-      <Button
-        title="Ver historial"
-        onPress={() => navigation.navigate('TransferList')}
-        color={COLORS.primary}
-      />
+      <BalanceCard />
     </View>
   );
 };
