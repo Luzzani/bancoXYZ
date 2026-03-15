@@ -8,7 +8,7 @@ import { BalanceResponse, TransferRequest, TransferResponse } from '../types';
 // La declaramos fuera de la función para que persista durante la sesión de la app
 let currentBalance = 1500420.5;
 
-export const setupHnalders = () => {
+export const setupHandlers = () => {
   mockInstance
     .onPost('/login')
     .reply(
