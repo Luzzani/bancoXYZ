@@ -18,7 +18,7 @@ import { Input } from '../../../components/common/Input';
 import { Button } from '../../../components/common/Button';
 import { COLORS } from '../../../theme/colors';
 import { RootStackParamList } from '../../../navigation/types';
-import { TransferConfirmModal } from './components/TrasnferConfirmModal';
+import { TransferConfirmModal } from './components/TransferConfirmModal';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'TransferForm'>;
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Modal, View, Text, StyleSheet } from 'react-native';
 import { COLORS } from '../../../../theme/colors';
 import { Button } from '../../../../components/common/Button';
@@ -14,7 +14,7 @@ interface TransferConfirmModalProps {
   onCancel: () => void;
 }
 
-export const TransferConfirmModal = ({
+const TransferConfirmModalComponent = ({
   isVisible,
   data,
   onConfirm,
@@ -54,6 +54,8 @@ export const TransferConfirmModal = ({
     </View>
   </Modal>
 );
+
+export const TransferConfirmModal = memo(TransferConfirmModalComponent);
 
 const styles = StyleSheet.create({
   overlay: {
