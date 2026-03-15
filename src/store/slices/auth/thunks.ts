@@ -1,16 +1,21 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { authApi } from '../../../api/authApi';
-import { getToken, saveToken } from '../../../utils/storage';
+import { getToken, getUserData, saveToken, saveUserData } from '../../../utils/storage';
 import { AuthResponse, LoginCredentials } from '../../../features/auth/types';
 import { ApiError } from '../../../api/types';
+import { AuthData } from './types';
 
-export const initializeAuth = createAsyncThunk<string | null, void, { rejectValue: string }>(
+export const initializeAuth = createAsyncThunk<AuthData | null, void, { rejectValue: string }>(
   'auth/initialize',
   async (_, { rejectWithValue }) => {
     try {
-      const token = await getToken();
-      if (!token || typeof token !== 'string') return null;
-      return token;
+      const [token, user] = await Promise.all([getToken(), getUserData()]);
+
+      if (token && user) {
+        return { token, user };
+      }
+
+      return null;
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : 'Error de storage');
     }
@@ -40,6 +45,7 @@ export const login = createAsyncThunk<AuthResponse, LoginCredentials, { rejectVa
       }
 
       await saveToken(response.token);
+      await saveUserData(response.user);
 
       return response;
     } catch (error) {

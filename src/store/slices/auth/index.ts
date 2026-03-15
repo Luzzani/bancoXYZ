@@ -35,12 +35,14 @@ const authSlice = createSlice({
       })
       .addCase(initializeAuth.fulfilled, (state, action) => {
         state.isInitializing = false;
-        state.token = action.payload;
+        state.token = action.payload?.token || null;
+        state.user = action.payload?.user || null;
         state.isAuthenticated = !!action.payload;
       })
       .addCase(initializeAuth.rejected, (state, action) => {
         state.isInitializing = false;
         state.storageError = action.payload ?? 'Error de inicialización';
+        state.isAuthenticated = false;
       })
       .addCase(login.pending, state => {
         state.isLoading = true;

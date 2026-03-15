@@ -10,3 +10,8 @@ export interface AuthState {
   isLoading: boolean;
   error: ApiError | null;
 }
+
+export interface AuthData {
+  token: string;
+  user: User | null;
+}
