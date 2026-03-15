@@ -20,6 +20,7 @@ export const COLORS = {
     disabled: '#bdc3c7',
   },
   border: '#E1E4E8',
+  divider: '#f0f0f0',
 } as const;
 
 export type ColorType = typeof COLORS;
