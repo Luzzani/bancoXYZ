@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { LoginScreen } from '../features/auth/LoginScreen';
 import { HomeScreen } from '../features/home/HomeScreen';
-import { TransferFormScreen } from '../features/transfer/TransferFormScreen';
+import { TransferScreen } from '../features/transfer/transferScreen';
 import { TransferListScreen } from '../features/transfer/TransferListScreen';
 import { RootStackParamList } from './types';
 import { useAuthInitialization } from '../hooks/useAuthInitialization';
@@ -28,7 +28,7 @@ export const RootNavigator = () => {
       ) : (
         <Stack.Group>
           <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="TransferForm" component={TransferFormScreen} />
+          <Stack.Screen name="TransferForm" component={TransferScreen} />
           <Stack.Screen name="TransferList" component={TransferListScreen} />
         </Stack.Group>
       )}

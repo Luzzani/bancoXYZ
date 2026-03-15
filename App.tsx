@@ -4,6 +4,7 @@ import { RootNavigator } from './src/navigation/RootNavigator';
 import { Provider } from 'react-redux';
 import { store } from './src/store';
 import { useAppInitialization } from './src/hooks/useAppInitialization';
+import Toast from 'react-native-toast-message';
 
 export default function App() {
   const { appIsReady } = useAppInitialization();
@@ -14,6 +15,7 @@ export default function App() {
       <NavigationContainer>
         <RootNavigator />
       </NavigationContainer>
+      <Toast />
     </Provider>
   );
 }
