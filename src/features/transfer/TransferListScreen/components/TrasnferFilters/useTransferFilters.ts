@@ -8,7 +8,9 @@ export const useTransferFilters = (items: TransferHistoryItem[]) => {
 
   const filteredItems = useMemo(() => {
     return items.filter(item => {
-      const matchesName = item.payeer.name.toLowerCase().includes(nameFilter.toLowerCase());
+      const matchesName =
+        !nameFilter ||
+        (item.payeer?.name?.toLowerCase().includes(nameFilter.toLowerCase()) ?? false);
 
       const matchesAmount = amountFilter === '' || item.value.toString().includes(amountFilter);
 

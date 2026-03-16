@@ -5,9 +5,10 @@ import {
   FlatList,
   Text,
   RefreshControl,
-  SafeAreaView,
   KeyboardAvoidingView,
   Platform,
+  TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import { useTransferHistory } from './useTrasnferHistory';
 import { useTransferFilters } from './components/TrasnferFilters/useTransferFilters';
@@ -15,9 +16,15 @@ import { TransferFilters } from './components/TrasnferFilters';
 import { TransferItem } from './components/TransferItems';
 import { COLORS } from '../../../theme/colors';
 import { TransferHistoryItem } from '../../../api/types';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../../navigation/types';
 
-export const TransferListScreen = () => {
-  const { items, isLoading, error, refreshHistory } = useTransferHistory();
+type Props = NativeStackScreenProps<RootStackParamList, 'TransferList'>;
+
+export const TransferListScreen = ({ navigation }: Props) => {
+  const { items, isLoading, error, refreshHistory, isRefreshing } = useTransferHistory();
 
   const { filteredItems, filters, setters, clearFilters } = useTransferFilters(items);
 
@@ -42,6 +49,9 @@ export const TransferListScreen = () => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color={COLORS.text.primary} />
+        </TouchableOpacity>
         <TransferFilters
           name={filters.name}
           amount={filters.amount}
@@ -57,24 +67,32 @@ export const TransferListScreen = () => {
             <Text style={styles.errorText}>{error}</Text>
           </View>
         ) : (
-          <FlatList
-            data={filteredItems}
-            keyExtractor={(item, index) => `${item.payeer.document}-${index}`}
-            renderItem={renderItem}
-            contentContainerStyle={styles.listContent}
-            showsVerticalScrollIndicator={false}
-            ListEmptyComponent={listEmptyComponent}
-            initialNumToRender={10}
-            maxToRenderPerBatch={10}
-            windowSize={5}
-            refreshControl={
-              <RefreshControl
-                refreshing={isLoading}
-                onRefresh={refreshHistory}
-                tintColor={COLORS.primary}
+          <>
+            {isLoading && items.length === 0 ? (
+              <View style={styles.center}>
+                <ActivityIndicator size="large" color={COLORS.primary} />
+              </View>
+            ) : (
+              <FlatList
+                data={filteredItems}
+                keyExtractor={(item, index) => `${item.payeer.document}-${index}`}
+                renderItem={renderItem}
+                contentContainerStyle={styles.listContent}
+                showsVerticalScrollIndicator={false}
+                ListEmptyComponent={listEmptyComponent}
+                initialNumToRender={10}
+                maxToRenderPerBatch={10}
+                windowSize={5}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={isRefreshing}
+                    onRefresh={refreshHistory}
+                    tintColor={COLORS.primary}
+                  />
+                }
               />
-            }
-          />
+            )}
+          </>
         )}
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -84,7 +102,6 @@ export const TransferListScreen = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#FFF',
   },
   container: {
     flex: 1,
@@ -100,6 +117,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
   },
+  backButton: { paddingHorizontal: 24, paddingVertical: 8, backgroundColor: '#FFF' },
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
