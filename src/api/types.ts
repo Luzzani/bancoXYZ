@@ -10,6 +10,12 @@ export interface BalanceResponse {
   lastMovement: string;
 }
 
+export interface BalanceDTO {
+  accountBalance: number;
+  currency: string;
+  lastMovement: string;
+}
+
 export interface BalanceState {
   data: BalanceResponse | null;
   isLoading: boolean;

@@ -2,11 +2,11 @@ import { delay } from '../../utils/time';
 import { mockInstance } from './setup';
 import { AuthResponse, LoginCredentials } from '../../features/auth/types';
 import {
-  BalanceResponse,
   TransferRequest,
   TransferResponse,
   ApiError,
   TransferHistoryItem,
+  BalanceDTO,
 } from '../types';
 
 // VARIABLES DE ESTADO LOCAL (SIMULA LA DB)
@@ -53,25 +53,23 @@ export const setupHandlers = () => {
       return createError(401, 'Credenciales inválidas', 'INVALID_CREDENTIALS');
     });
 
-  mockInstance
-    .onGet('/balance')
-    .reply(async (config): Promise<[number, BalanceResponse | ApiError]> => {
-      await delay(1000);
-      const authHeader = config.headers?.Authorization;
+  mockInstance.onGet('/balance').reply(async (config): Promise<[number, BalanceDTO | ApiError]> => {
+    await delay(1000);
+    const authHeader = config.headers?.Authorization;
 
-      if (authHeader !== `Bearer ${AUTH_TOKEN}`) {
-        return UNAUTHORIZED_ERROR;
-      }
+    if (authHeader !== `Bearer ${AUTH_TOKEN}`) {
+      return UNAUTHORIZED_ERROR;
+    }
 
-      return [
-        200,
-        {
-          balance: currentBalance,
-          currency: 'ARS',
-          lastMovement: '2026-03-14',
-        },
-      ];
-    });
+    return [
+      200,
+      {
+        accountBalance: currentBalance,
+        currency: 'ARS',
+        lastMovement: '2026-03-14',
+      },
+    ];
+  });
 
   mockInstance
     .onPost('/transfer')
