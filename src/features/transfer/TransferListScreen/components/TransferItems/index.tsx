@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { TransferHistoryItem } from '../../../../../api/types';
 import { COLORS } from '../../../../../theme/colors';
+import { Ionicons } from '@expo/vector-icons';
 
 interface TransferItemProps {
   item: TransferHistoryItem;
@@ -21,9 +22,11 @@ const TransferItemComponent = ({ item }: TransferItemProps) => {
     <View style={[styles.container, isScheduled && styles.scheduledContainer]}>
       <View style={styles.mainInfo}>
         <View style={[styles.iconCircle, isScheduled && styles.scheduledIcon]}>
-          <Text style={[styles.iconText, isScheduled && styles.scheduledIconText]}>
-            {isScheduled ? '🕒' : item.payeer.name.charAt(0).toUpperCase()}
-          </Text>
+          {isScheduled ? (
+            <Ionicons name="time-outline" size={24} color={COLORS.text.secondary} />
+          ) : (
+            <Text style={styles.iconText}>{item.payeer.name.charAt(0).toUpperCase()}</Text>
+          )}
         </View>
         <View style={styles.details}>
           <View style={styles.nameRow}>
