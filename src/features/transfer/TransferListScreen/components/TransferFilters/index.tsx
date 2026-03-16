@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Platform } from 'react-native';
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { Input } from '../../../../../components/common/Input';
 import { COLORS } from '../../../../../theme/colors';
+import { DatePicker } from '../../../../../components/common/DatePicker';
 
 interface TransferFiltersProps {
   name: string;
@@ -31,17 +31,9 @@ export const TransferFilters = ({
     return `${d}/${m}/${y}`;
   };
 
-  const handleDateChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
-    if (Platform.OS === 'android') {
-      setShowPicker(false);
-    }
-
-    if (event.type === 'set' && selectedDate) {
-      const y = selectedDate.getFullYear();
-      const m = String(selectedDate.getMonth() + 1).padStart(2, '0');
-      const d = String(selectedDate.getDate()).padStart(2, '0');
-      setDate(`${y}-${m}-${d}`);
-    }
+  const handleClear = () => {
+    setShowPicker(false);
+    onClear();
   };
 
   const hasFilters = name || amount || date;
@@ -82,17 +74,20 @@ export const TransferFilters = ({
         </TouchableOpacity>
       </View>
 
-      {showPicker && (
-        <DateTimePicker
-          value={date ? new Date(date + 'T12:00:00') : new Date()}
-          mode="date"
-          display={Platform.OS === 'ios' ? 'inline' : 'default'}
-          onChange={handleDateChange}
-        />
-      )}
+      <DatePicker
+        isVisible={showPicker}
+        value={date ? new Date(date + 'T12:00:00') : new Date()}
+        onClose={() => setShowPicker(false)}
+        onChange={selectedDate => {
+          const y = selectedDate.getFullYear();
+          const m = String(selectedDate.getMonth() + 1).padStart(2, '0');
+          const d = String(selectedDate.getDate()).padStart(2, '0');
+          setDate(`${y}-${m}-${d}`);
+        }}
+      />
 
       {hasFilters && (
-        <TouchableOpacity style={styles.clearButton} onPress={onClear}>
+        <TouchableOpacity style={styles.clearButton} onPress={handleClear}>
           <Text style={styles.clearButtonText}>Limpiar filtros</Text>
         </TouchableOpacity>
       )}

@@ -8,17 +8,17 @@ import {
   Platform,
   TouchableOpacity,
 } from 'react-native';
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { Ionicons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useTransfer } from './useTransfer';
 import { Input } from '../../../components/common/Input';
 import { Button } from '../../../components/common/Button';
 import { COLORS } from '../../../theme/colors';
 import { RootStackParamList } from '../../../navigation/types';
+import { useTransfer } from './useTransfer';
 import { TransferConfirmModal } from './components/TransferConfirmModal';
+import { DatePicker } from '../../../components/common/DatePicker';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'TransferForm'>;
 
@@ -71,20 +71,13 @@ export const TransferScreen = ({ navigation }: Props) => {
               </TouchableOpacity>
             </View>
 
-            {form.showDatePicker && (
-              <DateTimePicker
-                value={form.date}
-                mode="date"
-                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                minimumDate={new Date()}
-                onChange={(event: DateTimePickerEvent, selectedDate?: Date) => {
-                  form.setShowDatePicker(false);
-                  if (event.type === 'set' && selectedDate) {
-                    form.setDate(selectedDate);
-                  }
-                }}
-              />
-            )}
+            <DatePicker
+              isVisible={form.showDatePicker}
+              value={form.date}
+              minimumDate={new Date()}
+              onClose={() => form.setShowDatePicker(false)}
+              onChange={selectedDate => form.setDate(selectedDate)}
+            />
           </View>
 
           <View style={styles.footer}>
