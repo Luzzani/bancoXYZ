@@ -12,7 +12,7 @@ export const useTransferFilters = (items: TransferHistoryItem[]) => {
         !nameFilter ||
         (item.payeer?.name?.toLowerCase().includes(nameFilter.toLowerCase()) ?? false);
 
-      const matchesAmount = amountFilter === '' || item.value.toString().includes(amountFilter);
+      const matchesAmount = amountFilter === '' || item.value.toString().startsWith(amountFilter);
 
       const matchesDate = dateFilter === '' || item.date === dateFilter;
 
