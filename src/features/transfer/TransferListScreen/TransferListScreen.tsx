@@ -11,8 +11,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { useTransferHistory } from './useTrasnferHistory';
-import { useTransferFilters } from './components/TrasnferFilters/useTransferFilters';
-import { TransferFilters } from './components/TrasnferFilters';
+import { useTransferFilters } from './components/TransferFilters/useTransferFilters';
 import { TransferItem } from './components/TransferItems';
 import { COLORS } from '../../../theme/colors';
 import { TransferHistoryItem } from '../../../api/types';
@@ -20,6 +19,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../navigation/types';
+import { TransferFilters } from './components/TransferFilters';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'TransferList'>;
 

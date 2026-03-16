@@ -1,12 +1,12 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { LoginScreen } from '../features/auth/LoginScreen';
 import { HomeScreen } from '../features/home/HomeScreen';
-import { TransferScreen } from '../features/transfer/transferScreen';
 import { RootStackParamList } from './types';
 import { useAuthInitialization } from '../hooks/useAuthInitialization';
 import { ErrorView } from '../components/common/ErrorView';
 import { LoadingView } from '../components/common/LoadingView';
 import { TransferListScreen } from '../features/transfer/TransferListScreen/TransferListScreen';
+import { TransferScreen } from '../features/transfer/TransferScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
