@@ -15,6 +15,7 @@ export const useTransfer = () => {
   const [recipientDoc, setRecipientDoc] = useState('');
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [docTouched, setDocTouched] = useState(false);
 
   const numericAmount = useMemo(() => {
     if (!amount) return 0;
@@ -38,6 +39,16 @@ export const useTransfer = () => {
     if (numericAmount > safeBalance) return 'Saldo insuficiente';
     return null;
   }, [amount, numericAmount, data]);
+
+  const recipientDocError = useMemo(() => {
+    if (!docTouched) return null;
+
+    if (recipientDoc.length < 7) {
+      return 'El DNI/CUIT debe tener al menos 7 números';
+    }
+
+    return null;
+  }, [recipientDoc, docTouched]);
 
   const isReady = useMemo(() => {
     return (
@@ -86,6 +97,7 @@ export const useTransfer = () => {
       setRecipientDoc('');
       setDate(new Date());
       dispatch(resetTransferStatus());
+      setDocTouched(false);
     } catch (error) {
       console.log('Error:', error);
     }
@@ -114,8 +126,13 @@ export const useTransfer = () => {
       setDate,
       showDatePicker,
       setShowDatePicker,
+      onRecipientDocBlur: () => setDocTouched(true),
     },
-    status: { isLoading, localError },
+    status: {
+      isLoading,
+      localError,
+      recipientDocError,
+    },
     confirmation,
     isReady,
   };

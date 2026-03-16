@@ -48,7 +48,9 @@ export const TransferScreen = ({ navigation }: Props) => {
               placeholder="Ej: 20384445551"
               value={form.recipientDoc}
               onChangeText={form.setRecipientDoc}
+              onBlur={form.onRecipientDocBlur}
               keyboardType="numeric"
+              error={status.recipientDocError}
             />
 
             <Input
